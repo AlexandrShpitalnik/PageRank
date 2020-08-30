@@ -106,11 +106,7 @@ public class MakeGraph extends Configured implements Tool {
                         url = url.substring(0, url.length() -1);
                     }
                     res.add(url);
-                    //System.out.print(url + '\n');
-                } else {
-                    //System.out.print("url.err \n");
                 }
-                //System.out.print(regSt+ '\n');
             }
             return res;
         }
@@ -132,9 +128,6 @@ public class MakeGraph extends Configured implements Tool {
                     if (urlToId.containsKey(url)) {
                         int linkId = urlToId.get(url);
                         if (linkId != pageId) {
-                            //context.write(new LongWritable(pageId), new Text("O:" + Integer.toString(linkId)));
-                            //context.write(new LongWritable(linkId), new Text("I:"+ Integer.toString(pageId)));
-                            //context.write(new Text(idDoc[0]), new Text("O:" + Integer.toString(linkId)));
                             out.append(Integer.toString(linkId));
                             out.append(',');
                             context.write(new Text(Integer.toString(linkId)), new Text("I:" + idDoc[0]));
@@ -160,17 +153,9 @@ public class MakeGraph extends Configured implements Tool {
 
 
             mapperLeaf += pageLeafs;
-            //context.write(new LongWritable(pageId), new Text("L:" + Integer.toString(pageLeafs)));
             context.write(new Text(idDoc[0]), new Text("L:" + Integer.toString(pageLeafs)));
         }
 
-        //@Override
-        //protected void cleanup(Context context) throws IOException, InterruptedException {
-        //    long n_reducers = context.getConfiguration().getLong(MRJobConfig.NUM_REDUCES, 1);
-        //    for (int i = 0; i<n_reducers; i++){
-        //        context.write(new Text("A:"+Integer.toString(i)), new IntText(mapperLeaf));
-        //    }
-        //}
     }
 
     public static class GraphReducer extends Reducer<Text, Text, Text, Text> {
@@ -229,12 +214,8 @@ public class MakeGraph extends Configured implements Tool {
         }
 
         protected void cleanup(Context context) throws IOException, InterruptedException {
-            //System.out.print(Integer.toString(leafNum) + "\n");
             context.write(new Text("-1"), new Text(Integer.toString(leafNum)));
-            //Configuration conf = context.getConfiguration();
-            //Path toUrlIdx = new Path(conf.get("toLeafNum"));
-            //FileSystem fs = toUrlIdx.getFileSystem(conf);
-            //FSDataOutputStream urlIdxStream = fs.open(toUrlIdx);
+
         }
 
     }
@@ -263,9 +244,7 @@ public class MakeGraph extends Configured implements Tool {
         job.setMapperClass(GraphMapper.class);
         job.setReducerClass(GraphReducer.class);
         job.setNumReduceTasks(50);
-
-        //job.setPartitionerClass(GraphPartitioner.class);
-
+        
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(Text.class);
 

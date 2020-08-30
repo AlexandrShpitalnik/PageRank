@@ -38,7 +38,6 @@ public class SortJob extends Configured implements Tool{
         protected void setup(Context context) throws IOException, InterruptedException {
             Configuration conf = context.getConfiguration();
             SORT_VAL = Integer.parseInt(conf.get("cur"));
-            //nPages = Integer.parseInt(conf.get("nPages"));
         }
 
         @Override

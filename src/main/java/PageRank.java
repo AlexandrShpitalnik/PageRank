@@ -108,7 +108,6 @@ public class PageRank extends Configured implements Tool {
         @Override
         protected void setup(Context context) throws IOException, InterruptedException {
             Configuration conf = context.getConfiguration();
-            //iter = Integer.parseInt(conf.get("curIteration"));
             nPages = Integer.parseInt(conf.get("nPages"));
         }
 
